@@ -1,0 +1,243 @@
+openapi: 3.1.0
+info:
+  description: "This document describes the documentation, a collection of JSON schemas\
+    \ and example cloudevent and payloads"
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  title: Mindwm API
+  version: 0.1.0
+servers:
+- description: Production API endpoint for the Mindwm API
+  url: https://mindwmw.io/v1
+components:
+  schemas:
+    IoDocumentEvent:
+      additionalProperties: {}
+      allOf:
+      - description: CloudEvents Specification JSON Schema
+        properties:
+          id:
+            description: Identifies the event.
+            minLength: 1
+          source:
+            description: Identifies the context in which an event happened.
+            format: uri-reference
+            minLength: 1
+          specversion:
+            description: The version of the CloudEvents specification which the event
+              uses.
+            minLength: 1
+          type:
+            description: Describes the type of event related to the originating occurrence.
+            minLength: 1
+          datacontenttype:
+            description: Content type of the data value. Must adhere to RFC 2046 format.
+            minLength: 1
+          dataschema:
+            description: Identifies the schema that data adheres to.
+            minLength: 1
+          subject:
+            description: Describes the subject of the event in the context of the
+              event producer (identified by source).
+            minLength: 1
+          time:
+            description: Timestamp of when the occurrence happened. Must adhere to
+              RFC 3339.
+            format: date-time
+            minLength: 1
+          data:
+            $ref: '#/components/schemas/IoDocumentEvent_allOf_data'
+          data_base64:
+            description: Base64 encoded event payload. Must adhere to RFC4648.
+        required:
+        - id
+        - source
+        - specversion
+        - type
+        definitions:
+          iddef:
+            type: string
+            minLength: 1
+          sourcedef:
+            type: string
+            format: uri-reference
+            minLength: 1
+          specversiondef:
+            type: string
+            minLength: 1
+          typedef:
+            type: string
+            minLength: 1
+          datacontenttypedef:
+            type: string
+            minLength: 1
+          dataschemadef:
+            type: string
+            minLength: 1
+          subjectdef:
+            type: string
+            minLength: 1
+          timedef:
+            type: string
+            format: date-time
+            minLength: 1
+          datadef:
+            type: object
+          data_base64def:
+            type: string
+            contentEncoding: base64
+      - properties:
+          type:
+            default: IoDocument
+          subject:
+            default: IoDocument
+          source: {}
+          data:
+            $ref: '#/components/schemas/IoDocument'
+    ClipboardEvent:
+      additionalProperties: {}
+      allOf:
+      - description: CloudEvents Specification JSON Schema
+        properties:
+          id:
+            description: Identifies the event.
+            minLength: 1
+          source:
+            description: Identifies the context in which an event happened.
+            format: uri-reference
+            minLength: 1
+          specversion:
+            description: The version of the CloudEvents specification which the event
+              uses.
+            minLength: 1
+          type:
+            description: Describes the type of event related to the originating occurrence.
+            minLength: 1
+          datacontenttype:
+            description: Content type of the data value. Must adhere to RFC 2046 format.
+            minLength: 1
+          dataschema:
+            description: Identifies the schema that data adheres to.
+            minLength: 1
+          subject:
+            description: Describes the subject of the event in the context of the
+              event producer (identified by source).
+            minLength: 1
+          time:
+            description: Timestamp of when the occurrence happened. Must adhere to
+              RFC 3339.
+            format: date-time
+            minLength: 1
+          data:
+            $ref: '#/components/schemas/IoDocumentEvent_allOf_data'
+          data_base64:
+            description: Base64 encoded event payload. Must adhere to RFC4648.
+        required:
+        - id
+        - source
+        - specversion
+        - type
+        definitions:
+          iddef:
+            type: string
+            minLength: 1
+          sourcedef:
+            type: string
+            format: uri-reference
+            minLength: 1
+          specversiondef:
+            type: string
+            minLength: 1
+          typedef:
+            type: string
+            minLength: 1
+          datacontenttypedef:
+            type: string
+            minLength: 1
+          dataschemadef:
+            type: string
+            minLength: 1
+          subjectdef:
+            type: string
+            minLength: 1
+          timedef:
+            type: string
+            format: date-time
+            minLength: 1
+          datadef:
+            type: object
+          data_base64def:
+            type: string
+            contentEncoding: base64
+      - properties:
+          type:
+            default: Clipboard
+          subject:
+            default: Clipboard
+          source: {}
+          data:
+            $ref: '#/components/schemas/Clipboard'
+    Clipboard:
+      additionalProperties: {}
+      properties:
+        context:
+          $ref: '#/components/schemas/ClipboardContext'
+        clipboardType:
+          description: Type of clipboard
+          enum:
+          - Primary
+          - Secondary
+          - Clipboard
+        content:
+          description: Clipboard content
+        selectionStart:
+          $ref: '#/components/schemas/Vector2int'
+        selectionEnd:
+          $ref: '#/components/schemas/Vector2int'
+      required:
+      - clipboardType
+      - content
+      - context
+    ClipboardContext:
+      properties:
+        windowId:
+          description: Xorg window_id
+          maximum: 4294967295
+          minimum: 0
+          type: number
+      required:
+      - windowId
+    IoDocument:
+      additionalProperties: {}
+      properties:
+        input:
+          description: User input
+          minLength: 1
+        output:
+          description: Command output (mix of stdout & stderr)
+          minLength: 0
+        ps1:
+          description: ps1 (prompt) AFTER the input and output
+          minLength: 1
+      required:
+      - input
+      - output
+      - ps1
+    Vector2int:
+      properties:
+        x:
+          description: the X coordinate
+          maximum: 4294967295
+          minimum: 0
+          type: number
+        "y":
+          description: the Y coordinate
+          maximum: 4294967295
+          minimum: 0
+          type: number
+      required:
+      - x
+      - "y"
+    IoDocumentEvent_allOf_data:
+      description: The event payload.
